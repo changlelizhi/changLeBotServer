@@ -1,5 +1,8 @@
 package com.changle.service;
 
+import com.changle.dto.request.UserRegisterRequest;
+import com.changle.entity.User;
+
 /**
  * @author : 长乐
  * @package : com.changle.service
@@ -11,4 +14,5 @@ package com.changle.service;
 public interface UserService {
 
 
+    boolean register(User user);
 }

@@ -1,5 +1,6 @@
 package com.changle.bot;
 
+import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,17 @@ public class ChangLeBot implements SpringLongPollingBot, LongPollingSingleThread
     private final TelegramClient telegramClient;
 
     public ChangLeBot(){
-        telegramClient=new OkHttpTelegramClient(botToken);
+        telegramClient=new OkHttpTelegramClient(getBotToken());
+    }
+
+ /*   public ChangLeBot(@Value("${telegram.bot.token}")String botToken) {
+        this.telegramClient = new OkHttpTelegramClient(botToken);
+    }*/
+
+    @PostConstruct
+    public void init() {
+       // botCommandService.setGroupCommands(this.telegramClient);
+        //botCommandService.setPrivateCommands(this.telegramClient);
     }
 
     @Override

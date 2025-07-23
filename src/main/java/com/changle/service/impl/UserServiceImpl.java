@@ -1,7 +1,10 @@
 package com.changle.service.impl;
 
+import com.changle.entity.User;
+import com.changle.mapper.UserMapper;
 import com.changle.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -16,4 +19,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public boolean register(User user) {
+        userMapper.insertUser(user);
+
+
+        return false;
+    }
 }

@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<validation.version>3.5.3</validation.version>
 		<mybatis.version>3.0.5</mybatis.version>
 		<commons.lang3.version>3.18.0</commons.lang3.version>
 		<telegram.bot.version>9.0.0</telegram.bot.version>
@@ -72,6 +73,12 @@
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>${mybatis.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+			<version>${validation.version}</version>
 		</dependency>
 
 		<dependency>

@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.changle.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.changle.entity.User">
 
+    </resultMap>
+    <insert id="insertUser" parameterType="com.changle.entity.User">
+        insert into user(user_id, user_name, tg_name, toys, color)
+        values (#{userId}, #{userName}, #{tgName}, #{toys}, #{color})
+    </insert>
 
 </mapper>
