@@ -1,5 +1,6 @@
 package com.changle.service;
 
+import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 /**
@@ -12,6 +13,15 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
  */
 public interface SendMsgService {
 
+    void sendStartMessage(TelegramClient telegramClient, String chatId);
+
     void sendHelpMessage(TelegramClient telegramClient, String chatId);
+
+    void sendChinese(TelegramClient telegramClient, String chatId);
+
+
+    Message sendGroupLockMessage(TelegramClient telegramClient, String chatId);
+
+    Message sendGroupJiaoLangMessage(TelegramClient telegramClient, String chatId);
 
 }

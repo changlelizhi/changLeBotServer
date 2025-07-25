@@ -1,5 +1,6 @@
 package com.changle.bot;
 
+import com.changle.service.ChangLeBotService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,21 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 @Component
 public class ChangLeBot implements SpringLongPollingBot, LongPollingSingleThreadUpdateConsumer {
 
-    @Value("${telegram.bot.token}")
-    private String botToken;
+    private final String botToken;
 
     private final TelegramClient telegramClient;
 
-    public ChangLeBot(){
-        telegramClient=new OkHttpTelegramClient(getBotToken());
-    }
+    private final ChangLeBotService changLeBotService;
 
- /*   public ChangLeBot(@Value("${telegram.bot.token}")String botToken) {
+    public ChangLeBot(@Value("${telegram.bot.token}") String botToken, ChangLeBotService changLeBotService) {
+        this.botToken = botToken;
         this.telegramClient = new OkHttpTelegramClient(botToken);
-    }*/
+        this.changLeBotService = changLeBotService;
+    }
 
     @PostConstruct
     public void init() {
-       // botCommandService.setGroupCommands(this.telegramClient);
-        //botCommandService.setPrivateCommands(this.telegramClient);
+        changLeBotService.setBotCommand(telegramClient);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ChangLeBot implements SpringLongPollingBot, LongPollingSingleThread
     }
 
     @Override
-    public void consume(Update update) {
-
+    public void consume(Update update ) {
+        changLeBotService.mainFunction(telegramClient, update);
     }
 }

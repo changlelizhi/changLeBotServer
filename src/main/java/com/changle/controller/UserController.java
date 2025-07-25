@@ -19,13 +19,10 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/api/user")
-
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-
 
     /**
      *  注册
@@ -33,7 +30,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/register")
-    public ApiResult<?> register(@RequestBody UserRegisterRequest  request) {
+    public ApiResult<?> register(@RequestBody UserRegisterRequest request) {
         String firstName = request.getFirstName();
         String lastName = request.getLastName();
         String userName = UserUtils.combineUsername(firstName, lastName);

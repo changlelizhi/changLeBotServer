@@ -20,6 +20,7 @@ public enum BotCommands {
 
     HELP("/help"),
 
+    CHINESE("/chinese"),
 
     /**
      * 群组命令
@@ -34,4 +35,5 @@ public enum BotCommands {
     BotCommands(String command) {
         this.command = command;
     }
+
 }

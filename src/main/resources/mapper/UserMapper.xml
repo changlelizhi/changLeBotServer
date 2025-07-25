@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.changle.mapper.UserMapper">
-    <resultMap id="BaseResultMap" type="com.changle.entity.User">
 
+    <resultMap id="BaseResultMap" type="com.changle.entity.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="tg_name" property="tgName" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="add_time_count" property="addTimeCount" jdbcType="INTEGER"/>
+        <result column="reduce_time_count" property="reduceTimeCount" jdbcType="INTEGER"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="toys" property="toys" jdbcType="LONGVARCHAR"/>
+        <result column="xpinfo" property="xpinfo" jdbcType="LONGVARCHAR"/>
+        <result column="clothing" property="clothing" jdbcType="LONGVARCHAR"/>
     </resultMap>
-    <insert id="insertUser" parameterType="com.changle.entity.User">
-        insert into user(user_id, user_name, tg_name, toys, color)
-        values (#{userId}, #{userName}, #{tgName}, #{toys}, #{color})
+
+    <sql id="Base_Column_List">
+        id
+        ,user_id ,user_name ,tg_name ,create_time ,add_time_count ,reduce_time_count ,status ,toys ,xpinfo ,clothing
+
+    </sql>
+
+    <insert id="insertUser" parameterType="com.changle.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_user (user_id, user_name, tg_name, create_time, add_time_count, reduce_time_count, status, toys,
+                            xpinfo, clothing)
+        VALUES (#{userId}, #{userName}, #{tgName}, #{createTime}, #{addTimeCount}, #{reduceTimeCount}, #{status},
+                #{toys}, #{xpinfo}, #{clothing})
     </insert>
+
+    <!-- 根据user_id查询 -->
+    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_user
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- 更新增加/减少计数 -->
+    <update id="updateTimeCount">
+        UPDATE t_user
+        SET add_time_count    = #{addTimeCount},
+            reduce_time_count = #{reduceTimeCount}
+        WHERE user_id = #{userId}
+    </update>
 
 </mapper>

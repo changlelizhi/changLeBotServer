@@ -12,6 +12,6 @@ import com.changle.entity.User;
  */
 public interface UserMapper {
 
-    void insertUser(User user);
+    int insertUser(User user);
 
 }

@@ -25,7 +25,8 @@ public class ChangLeBotCommands {
     public static List<BotCommand> setPrivetChatCommand() {
         return List.of(
                 new BotCommand(BotCommands.START.getCommand(), "启动Bot"),
-                new BotCommand(BotCommands.HELP.getCommand(), "帮助")
+                new BotCommand(BotCommands.HELP.getCommand(), "帮助"),
+                new BotCommand(BotCommands.CHINESE.getCommand(), "中文语言包")
         );
     }
 }

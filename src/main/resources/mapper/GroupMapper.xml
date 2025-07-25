@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.changle.mapper.GroupMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.changle.entity.Group">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="chat_id" property="chatId" jdbcType="VARCHAR"/>
+        <result column="chat_name" property="chatName" jdbcType="VARCHAR"/>
+        <result column="chat_type" property="chatType" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,chat_id ,chat_name ,chat_type ,status ,creat_time
+    </sql>
+
+    <insert id="insertGroup" parameterType="com.changle.entity.Group" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_group (chat_id, chat_name, chat_type, status, creat_time)
+        VALUES (#{chatId}, #{chatName}, #{chatType}, #{status}, #{creatTime})
+    </insert>
+
+    <select id="selectByChatId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_group
+        WHERE chat_id = #{chatId}
+    </select>
+
+</mapper>

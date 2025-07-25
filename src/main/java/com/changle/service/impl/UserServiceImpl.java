@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 /**
  * @author : 长乐
  * @package : com.changle.service.impl
@@ -24,9 +27,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean register(User user) {
-        userMapper.insertUser(user);
-
-
+        user.setCreateTime(LocalDateTime.now());
+        user.setAddTimeCount(5);
+        user.setReduceTimeCount(5);
+        user.setStatus(1);
+        int id = userMapper.insertUser(user);
+        if (id > 0) {
+            return true;
+        }
         return false;
     }
 }
