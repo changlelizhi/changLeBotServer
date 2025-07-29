@@ -1,6 +1,5 @@
 package com.changle.service;
 
-import com.changle.dto.request.UserRegisterRequest;
 import com.changle.entity.User;
 
 /**
@@ -15,4 +14,7 @@ public interface UserService {
 
 
     boolean register(User user);
+
+    boolean saveUserInfo(String userId, String userInfo);
+
 }

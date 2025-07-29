@@ -2,11 +2,7 @@ package com.changle.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @author : 长乐
@@ -61,18 +57,8 @@ public class User {
     private Integer status;
 
     /**
-     * 玩具信息
+     * 用户信息
      */
-    private String toys;
-
-    /**
-     * XP信息
-     */
-    private String xpinfo;
-
-    /**
-     * 服装信息
-     */
-    private String clothing;
+    private String userInfo;
 
 }

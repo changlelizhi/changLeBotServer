@@ -1,14 +1,13 @@
 package com.changle.service.impl;
 
+import com.changle.bot.constant.ChangLeBotConstant;
 import com.changle.entity.User;
 import com.changle.mapper.UserMapper;
 import com.changle.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Date;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author : 长乐
@@ -26,15 +25,15 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean register(User user) {
-        user.setCreateTime(LocalDateTime.now());
-        user.setAddTimeCount(5);
-        user.setReduceTimeCount(5);
-        user.setStatus(1);
         int id = userMapper.insertUser(user);
-        if (id > 0) {
-            return true;
-        }
+        return id > ChangLeBotConstant.SQL_DEFAULT;
+    }
+
+    @Override
+    public boolean saveUserInfo(String userId, String userInfo) {
         return false;
     }
+
 }

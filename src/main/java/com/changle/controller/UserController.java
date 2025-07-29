@@ -1,5 +1,6 @@
 package com.changle.controller;
 
+import com.changle.bot.constant.ChangLeBotConstant;
 import com.changle.dto.ApiResult;
 import com.changle.dto.request.UserRegisterRequest;
 import com.changle.entity.User;
@@ -8,6 +9,8 @@ import com.changle.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 /**
  * @author : 长乐
@@ -34,7 +37,9 @@ public class UserController {
         String firstName = request.getFirstName();
         String lastName = request.getLastName();
         String userName = UserUtils.combineUsername(firstName, lastName);
-        User user = User.builder().userId(request.getUserId()).userName(userName).tgName(request.getTgName()).build();
+        User user = User.builder().userId(request.getUserId()).userName(userName).tgName(request.getTgName()).createTime(LocalDateTime.now())
+                .addTimeCount(ChangLeBotConstant.ADD_TIME_COUNT).reduceTimeCount(ChangLeBotConstant.REDUCE_TIME_COUNT)
+                .status(ChangLeBotConstant.USER_STATUS_NORMAL).build();
         return userService.register(user) ? ApiResult.success() : ApiResult.fail();
     }
 }

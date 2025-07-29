@@ -12,22 +12,20 @@
         <result column="add_time_count" property="addTimeCount" jdbcType="INTEGER"/>
         <result column="reduce_time_count" property="reduceTimeCount" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
-        <result column="toys" property="toys" jdbcType="LONGVARCHAR"/>
-        <result column="xpinfo" property="xpinfo" jdbcType="LONGVARCHAR"/>
-        <result column="clothing" property="clothing" jdbcType="LONGVARCHAR"/>
+        <result column="user_info" property="userInfo" jdbcType="LONGVARCHAR"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id
-        ,user_id ,user_name ,tg_name ,create_time ,add_time_count ,reduce_time_count ,status ,toys ,xpinfo ,clothing
+        ,user_id ,user_name ,tg_name ,create_time ,add_time_count ,reduce_time_count ,status ,user_info
 
     </sql>
 
     <insert id="insertUser" parameterType="com.changle.entity.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_user (user_id, user_name, tg_name, create_time, add_time_count, reduce_time_count, status, toys,
-                            xpinfo, clothing)
+        INSERT INTO t_user (user_id, user_name, tg_name, create_time, add_time_count, reduce_time_count, status, user_info)
         VALUES (#{userId}, #{userName}, #{tgName}, #{createTime}, #{addTimeCount}, #{reduceTimeCount}, #{status},
-                #{toys}, #{xpinfo}, #{clothing})
+                #{userInfo})
     </insert>
 
     <!-- 根据user_id查询 -->
@@ -45,5 +43,12 @@
             reduce_time_count = #{reduceTimeCount}
         WHERE user_id = #{userId}
     </update>
+
+    <update id="updateUserInfo" parameterType="com.changle.entity.User" >
+        UPDATE t_user
+        SET user_info = #{userInfo}
+        WHERE user_id = #{userId}
+    </update>
+
 
 </mapper>

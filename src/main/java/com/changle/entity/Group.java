@@ -27,6 +27,6 @@ public class Group {
 
     private Integer status;
 
-    private LocalDateTime creatTime;
+    private LocalDateTime createTime;
 
 }

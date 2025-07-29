@@ -15,7 +15,7 @@ public interface SendMsgService {
 
     void sendStartMessage(TelegramClient telegramClient, String chatId);
 
-    void sendHelpMessage(TelegramClient telegramClient, String chatId);
+    void sendHelpMessage(TelegramClient telegramClient, String chatId );
 
     void sendChinese(TelegramClient telegramClient, String chatId);
 
@@ -23,5 +23,7 @@ public interface SendMsgService {
     Message sendGroupLockMessage(TelegramClient telegramClient, String chatId);
 
     Message sendGroupJiaoLangMessage(TelegramClient telegramClient, String chatId);
+
+    Message sendJoinGroupMessage(TelegramClient telegramClient, String chatId,String text);
 
 }

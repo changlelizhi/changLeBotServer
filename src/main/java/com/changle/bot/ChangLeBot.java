@@ -3,7 +3,8 @@ package com.changle.bot;
 import com.changle.service.ChangLeBotService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
+import okhttp3.OkHttpClient;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
@@ -31,7 +32,8 @@ public class ChangLeBot implements SpringLongPollingBot, LongPollingSingleThread
 
     private final ChangLeBotService changLeBotService;
 
-    public ChangLeBot(@Value("${telegram.bot.token}") String botToken, ChangLeBotService changLeBotService) {
+    public ChangLeBot(@Value("${telegram.bot.token}") String botToken
+            ,  ChangLeBotService changLeBotService) {
         this.botToken = botToken;
         this.telegramClient = new OkHttpTelegramClient(botToken);
         this.changLeBotService = changLeBotService;
@@ -48,7 +50,7 @@ public class ChangLeBot implements SpringLongPollingBot, LongPollingSingleThread
     }
 
     @Override
-    public void consume(Update update ) {
+    public void consume(Update update) {
         changLeBotService.mainFunction(telegramClient, update);
     }
 }

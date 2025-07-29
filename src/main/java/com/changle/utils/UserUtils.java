@@ -4,11 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 /**
- * @Author：DemonJing
+ * @Author：长乐
  * @Package：com.jing.utils
  * @Project：lingJingBot
  * @name：UserUtils

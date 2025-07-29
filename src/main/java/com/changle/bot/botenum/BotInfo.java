@@ -14,6 +14,12 @@ import lombok.Getter;
 public enum BotInfo {
     BOT_NAME("nichangs_bot"),
 
+    GROUP_STATUS("groupStatus"),
+
+    BOT_STATUS("botStatus"),
+
+    BOT_IS_ADMIN("administrator"),
+
     MEMBER("member"),
 
     GROUP("group"),

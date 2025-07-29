@@ -11,18 +11,25 @@
         <result column="chat_name" property="chatName" jdbcType="VARCHAR"/>
         <result column="chat_type" property="chatType" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
-        <result column="creat_time" property="creatTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id
-        ,chat_id ,chat_name ,chat_type ,status ,creat_time
+        ,chat_id ,chat_name ,chat_type ,status ,create_time
     </sql>
 
     <insert id="insertGroup" parameterType="com.changle.entity.Group" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_group (chat_id, chat_name, chat_type, status, creat_time)
-        VALUES (#{chatId}, #{chatName}, #{chatType}, #{status}, #{creatTime})
+        INSERT INTO t_group (chat_id, chat_name, chat_type, status, create_time)
+        VALUES (#{chatId}, #{chatName}, #{chatType}, #{status}, #{createTime})
     </insert>
+
+
+    <update id="updateGroupStatus" >
+        update t_group
+        set status = #{status}
+        where chat_id = #{chatId}
+    </update>
 
     <select id="selectByChatId" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT

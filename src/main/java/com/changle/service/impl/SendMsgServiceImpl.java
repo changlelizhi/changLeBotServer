@@ -43,10 +43,7 @@ public class SendMsgServiceImpl implements SendMsgService {
     @Override
     public void sendHelpMessage(TelegramClient telegramClient, String chatId) {
         try {
-            SendMessage sendMessage = SendMessage.builder().chatId(chatId).text("""
-                    <b>作者懒得写帮助信息，GitHub:
-                    https://github.com/changlelizhi/changLeBotServer
-                    https://github.com/changlelizhi/changLeBotWeb</b>""").parseMode(ParseMode.HTML).build();
+            SendMessage sendMessage = SendMessage.builder().chatId(chatId).text("如果给了管理员，并且赋予了修改群组信息 和 删除消息 权限，请联系作者（bot简介有作者联系方式）" ).parseMode(ParseMode.HTML).build();
              telegramClient.execute(sendMessage);
         } catch (TelegramApiException e) {
             log.error("发送消息失败: {}", e.getMessage());
@@ -72,4 +69,17 @@ public class SendMsgServiceImpl implements SendMsgService {
     public Message sendGroupJiaoLangMessage(TelegramClient telegramClient, String chatId) {
         return null;
     }
+
+    @Override
+    public Message sendJoinGroupMessage(TelegramClient telegramClient, String chatId,String text) {
+        try {
+            SendMessage sendMessage = SendMessage.builder().chatId(chatId).text(text).parseMode(ParseMode.HTML).build();
+            return telegramClient.execute(sendMessage);
+        }catch (TelegramApiException e){
+            log.error("发送消息失败: {}", e.getMessage());
+        }
+        return null;
+    }
+
+
 }
