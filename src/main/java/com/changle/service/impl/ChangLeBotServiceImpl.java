@@ -7,14 +7,12 @@ import com.changle.bot.botenum.BotInfo;
 import com.changle.bot.constant.ChangLeBotConstant;
 import com.changle.config.VirtualThreadConfig;
 import com.changle.entity.User;
-import com.changle.service.ChangLeBotService;
-import com.changle.service.GroupService;
-import com.changle.service.SendMsgService;
-import com.changle.service.UserService;
+import com.changle.service.*;
 import com.changle.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -57,6 +55,9 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
     @Autowired
     private VirtualThreadConfig virtualThreadConfig;
 
+    @Autowired
+    private LockGameService lockGameService;
+
     @Override
     @Async("virtualThreadExecutor")
     public void mainFunction(TelegramClient telegramClient, Update update) {
@@ -71,29 +72,31 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
                     groupService.botLeaveGroup(update);
                     return;
                 }
-
                 if (update.getMyChatMember().getNewChatMember().getStatus().equals(BotInfo.BOT_IS_ADMIN.getInfo())
                         && update.getMyChatMember().getNewChatMember().getUser().getUserName().equals(BotInfo.BOT_NAME.getInfo())
-                        && update.getMyChatMember().getNewChatMember().getUser().getIsBot()
-                ) {
+                        && update.getMyChatMember().getNewChatMember().getUser().getIsBot()) {
                     groupService.botIsAdmin(telegramClient, update);
+                    return;
                 }
-
+                return;
             }
 
             if (update.hasMessage() && update.getMessage().getNewChatMembers() != null && !update.getMessage().getNewChatMembers().isEmpty()) {
                 groupService.userJoinGroup(telegramClient, update);
                 return;
-
             }
+            if (update.hasMessage() && update.getMessage().getLeftChatMember() != null) {
+                groupService.userLeaveGroup(telegramClient, update);
+                return;
+            }
+
             if (update.hasMessage() && update.getMessage().isCommand()) {
                 String text = update.getMessage().getText();
                 String chatId = update.getMessage().getChatId().toString();
 
                 if (StringUtils.isBlank(text)) {
-
+                    return;
                 }
-
                 //todo 私聊机器人命令
                 if (update.getMessage().getChat().isUserChat()) {
                     if (text.equals(BotCommands.START.getCommand())) {
@@ -111,18 +114,28 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
                         return;
                     }
                 }
-                if (!botIsAdmin(update)) {
-                    log.info("非管理员");
-                    return;
+                //截取字符串输出@之后的字符串
+                String botName = text.substring(text.indexOf("@") + 1);
+                if (Strings.CS.equals(botName, BotInfo.BOT_NAME.getInfo())) {
+                    if (update.getMessage().getChat().isGroupChat() || update.getMessage().getChat().isSuperGroupChat()) {
+                        log.info("群组命令text: {}", text);
+                        //判断群组状态是否是管理员
+                        boolean flag = checkGroupStatus(update.getMessage().getChatId().toString());
+                        if (flag) {
+                            if (text.equals(BotCommands.LOCK.getCommand())) {
+                                //todo 查询并发送带有两个按钮的消息
+                                lockGameService.queryLockGameAndSendButMsg(telegramClient,update);
+                                return;
+                            }
+
+                            if (text.equals(BotCommands.JIAO_LANG.getCommand())) {
+                                //todo
+
+                                return;
+                            }
+                        }
+                    }
                 }
-
-                //todo 群聊机器人命令（要检查群组是否被加入到白名单）
-                if (update.getMessage().getChat().isGroupChat() || update.getMessage().getChat().isSuperGroupChat()) {
-                    log.info("群聊命令");
-
-                }
-
-
             }
         });
     }
@@ -145,32 +158,8 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
         }
     }
 
-
-    /**
-     * 判断机器人是否是管理员
-     */
-    private static boolean botIsAdmin(Update update) {
-        return update.hasMyChatMember()
-                && update.getMyChatMember().getNewChatMember().getStatus().equals(BotInfo.BOT_IS_ADMIN.getInfo())
-                && update.getMyChatMember().getNewChatMember().getUser().getIsBot()
-                && update.getMyChatMember().getNewChatMember().getUser().getUserName().equals(BotInfo.BOT_NAME.getInfo());
+    private boolean checkGroupStatus(String chatId) {
+        Integer groupStatus = groupService.queryGroupStatus(chatId);
+        return ChangLeBotConstant.GROUP_STATUS_NORMAL.equals(groupStatus);
     }
-
-
-/**
- * 判断机器人是否是管理员 并且给予相应的权限
- */
-   /* private static boolean botIsAdmin(Update update) {
-        if (update.hasMyChatMember()) {
-            if (update.getMyChatMember().getNewChatMember().getStatus().equals("administrator")) {
-                //判断权限
-                ChatMemberAdministrator ChatMemberAdministrator = (ChatMemberAdministrator) update.getMyChatMember().getNewChatMember();
-                return ChatMemberAdministrator.getCanChangeInfo()
-                        && ChatMemberAdministrator.getCanDeleteMessages()
-                        && ChatMemberAdministrator.getCanManageChat();
-            }
-            return false;
-        }
-        return false;
-    }*/
 }

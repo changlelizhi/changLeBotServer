@@ -110,11 +110,11 @@ public class GroupServiceImpl implements GroupService {
                 if (insertGroup <= ChangLeBotConstant.SQL_DEFAULT) {
                     throw new RuntimeException("数据库插入失败");
                 }
-                sendMsgService.sendJoinGroupMessage(telegramClient, chatId, text);
+                sendMsgService.sendHtmlMsg(telegramClient, chatId, text);
                 return;
             }
             if (groupStatus.equals(ChangLeBotConstant.GROUP_STATUS_DELETE) && botIsJoin(update)) {
-                sendMsgService.sendJoinGroupMessage(telegramClient, chatId, text);
+                sendMsgService.sendHtmlMsg(telegramClient, chatId, text);
             }
         } catch (Exception e) {
             stringRedisTemplate.delete(chatId);
@@ -156,9 +156,10 @@ public class GroupServiceImpl implements GroupService {
         String chatId = update.getMessage().getChat().getId().toString();
         String userId = update.getMessage().getFrom().getId().toString();
         String text = String.format("欢迎用户:<a href=\"tg://user?id=%s\">%s</a> 加入 <b><u><i>%s</i></u></b>，爱你呦，宝贝💖", userId, userName, chatName);
-        Message message = sendMsgService.sendJoinGroupMessage(telegramClient, chatId, text);
-        deleteMsgService.deleteMsg(telegramClient, chatId, message);
-
+        Message message = sendMsgService.sendHtmlMsg(telegramClient, chatId, text);
+        if (message != null){
+            deleteMsgService.deleteMsg(telegramClient, chatId, message);
+        }
     }
 
     /**
@@ -168,7 +169,13 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     public void userLeaveGroup(TelegramClient telegramClient, Update update) {
-
+        User leftUser = update.getMessage().getLeftChatMember();
+        String username = UserUtils.combineUsername(leftUser.getFirstName(), leftUser.getLastName());
+        String text = String.format("用户:%s 离开了群组，再见啦",  username);
+        Message message = sendMsgService.sendHtmlMsg(telegramClient, update.getMessage().getChat().getId().toString(), text);
+        if (message != null){
+            deleteMsgService.deleteMsg(telegramClient, update.getMessage().getChat().getId().toString(), message);
+        }
     }
 
     @Override

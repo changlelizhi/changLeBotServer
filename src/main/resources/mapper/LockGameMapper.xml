@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.changle.mapper.LockGameMapper">
+
+
+    <resultMap id="BaseResultMap" type="com.changle.entity.LockGame">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="lock_game_id" property="lockGameId" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="lock_game_mode" property="lockGameMode" jdbcType="INTEGER"/>
+        <result column="lock_game_status" property="lockGameStatus" jdbcType="INTEGER"/>
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP"/>
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP"/>
+        <result column="pause_time" property="pauseTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id
+        ,lock_game_id ,user_id ,lock_game_mode ,lock_game_status ,start_time ,end_time ,pause_time
+    </sql>
+
+    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_lock_game
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insertLockGame" parameterType="com.changle.entity.LockGame" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_lock_game (lock_game_id, user_id, lock_game_mode, lock_game_status, start_time, end_time, pause_time)
+        VALUES (#{lockGameId}, #{userId}, #{lockGameMode}, #{lockGameStatus}, #{startTime}, #{endTime}, #{pauseTime})
+    </insert>
+
+</mapper>

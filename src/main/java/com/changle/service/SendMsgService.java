@@ -20,10 +20,10 @@ public interface SendMsgService {
     void sendChinese(TelegramClient telegramClient, String chatId);
 
 
+    Message sendHtmlMsg(TelegramClient telegramClient,String chatId, String text);
+
     Message sendGroupLockMessage(TelegramClient telegramClient, String chatId);
 
     Message sendGroupJiaoLangMessage(TelegramClient telegramClient, String chatId);
-
-    Message sendJoinGroupMessage(TelegramClient telegramClient, String chatId,String text);
 
 }

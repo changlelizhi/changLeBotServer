@@ -26,4 +26,6 @@ public class ChangLeBotConstant {
 
     public static final Integer GROUP_STATUS_DELETE = 9;
 
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
 }
