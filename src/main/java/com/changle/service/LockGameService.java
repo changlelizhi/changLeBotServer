@@ -21,4 +21,6 @@ public interface LockGameService {
     Integer saveLockGame(LockGame lockGame);
 
     void queryLockGameAndSendButMsg(TelegramClient telegramClient, Update  update);
+
+
 }

@@ -74,10 +74,14 @@ public class SendMsgServiceImpl implements SendMsgService {
     }
 
     @Override
-    public Message sendGroupLockMessage(TelegramClient telegramClient, String chatId) {
-
-
-        return null;
+    public Message sendGroupLockMessage(TelegramClient telegramClient, InlineKeyboardMarkup inlineKeyboardMarkup, String chatId,String  text) {
+        SendMessage sendMessage = SendMessage.builder().chatId(chatId).replyMarkup(inlineKeyboardMarkup).text(text).parseMode(ParseMode.HTML).build();
+        try {
+            return telegramClient.execute(sendMessage);
+        } catch (TelegramApiException e) {
+            log.error("SendMsgService.sendGroupLockMessage()方法失败: {}", e.getMessage());
+            return null;
+        }
     }
 
     @Override

@@ -44,4 +44,16 @@ public class DeleteMsgServiceImpl implements DeleteMsgService {
         }, 10, TimeUnit.SECONDS);
 
     }
+
+    @Override
+    public void deleteLockGameMsg(TelegramClient telegramClient, String chatId, Message message) {
+        scheduler.schedule(() -> {
+            try {
+                DeleteMessage deleteMessage = DeleteMessage.builder().chatId(chatId).messageId(message.getMessageId()).build();
+                telegramClient.execute(deleteMessage);
+            } catch (TelegramApiException e) {
+                throw new BotBaseException(BotError.BOT_DELETE_MSG_FAILED, e);
+            }
+        }, 60, TimeUnit.SECONDS);
+    }
 }

@@ -1,6 +1,7 @@
 package com.changle.service;
 
 import org.telegram.telegrambots.meta.api.objects.message.Message;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 /**
@@ -22,7 +23,7 @@ public interface SendMsgService {
 
     Message sendHtmlMsg(TelegramClient telegramClient,String chatId, String text);
 
-    Message sendGroupLockMessage(TelegramClient telegramClient, String chatId);
+    Message sendGroupLockMessage(TelegramClient telegramClient, InlineKeyboardMarkup inlineKeyboardMarkup, String chatId,String text);
 
     Message sendGroupJiaoLangMessage(TelegramClient telegramClient, String chatId);
 

@@ -14,4 +14,6 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 public interface DeleteMsgService {
 
     void deleteMsg(TelegramClient telegramClient, String chatId, Message message);
+
+    void deleteLockGameMsg(TelegramClient telegramClient, String chatId, Message message);
 }
