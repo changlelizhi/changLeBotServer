@@ -25,10 +25,9 @@ public enum BotCommands {
     /**
      * 群组命令
      */
-    LOCK("/lock@nichangs_bot"),
+    LOCK("/lock"),
 
     JIAO_LANG("/jiaolang");
-
 
     private final String command;
 

@@ -6,11 +6,8 @@ import com.changle.bot.botenum.BotCommands;
 import com.changle.bot.botenum.BotInfo;
 import com.changle.bot.constant.ChangLeBotConstant;
 import com.changle.config.VirtualThreadConfig;
-import com.changle.entity.User;
 import com.changle.service.*;
-import com.changle.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +16,13 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.menubutton.SetChatMenuButton;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
-import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberAdministrator;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeAllGroupChats;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeAllPrivateChats;
 import org.telegram.telegrambots.meta.api.objects.menubutton.MenuButtonCommands;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -104,7 +99,6 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
                         return;
                     }
                     if (text.equals(BotCommands.HELP.getCommand())) {
-                        //String helpText = String.format("用户:<a href=\"tg://user?id=%s\">%s</a> ，爱你呦，宝贝💖", "6071490801", "以前的静（删库跑路版）");
                         sendMsgService.sendHelpMessage(telegramClient, chatId);
                         return;
                     }
@@ -124,7 +118,7 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
                         if (flag) {
                             if (text.equals(BotCommands.LOCK.getCommand())) {
                                 //todo 查询并发送带有两个按钮的消息
-                                lockGameService.queryLockGameAndSendButMsg(telegramClient,update);
+                                lockGameService.queryLockGameAndSendButMsg(telegramClient, update);
                                 return;
                             }
 
@@ -143,16 +137,20 @@ public class ChangLeBotServiceImpl implements ChangLeBotService {
     @Override
     public void setBotCommand(TelegramClient telegramClient) {
         try {
-            List<BotCommand> groupCommand = ChangLeBotCommands.setGroupCommand();
+            MenuButtonCommands menuButtonCommands = MenuButtonCommands.builder().build();
+            SetChatMenuButton menuButton = SetChatMenuButton.builder().menuButton(menuButtonCommands).build();
+            telegramClient.execute(menuButton);
+            log.info("设置菜单成功");
             List<BotCommand> privetChatCommand = ChangLeBotCommands.setPrivetChatCommand();
+            BotCommandScopeAllPrivateChats privateChats = BotCommandScopeAllPrivateChats.builder().build();
+            SetMyCommands setPrivetCommand = SetMyCommands.builder().commands(privetChatCommand).scope(privateChats).build();
+            telegramClient.execute(setPrivetCommand);
+            log.info("设置私有命令成功");
+            List<BotCommand> groupCommand = ChangLeBotCommands.setGroupCommand();
             BotCommandScopeAllGroupChats botCommandScopeAllGroupChats = BotCommandScopeAllGroupChats.builder().build();
             SetMyCommands setAnyOneCommands = SetMyCommands.builder().commands(groupCommand).scope(botCommandScopeAllGroupChats).build();
             telegramClient.execute(setAnyOneCommands);
-            SetChatMenuButton menuButton = SetChatMenuButton.builder().menuButton(new MenuButtonCommands()).build();
-            telegramClient.execute(menuButton);
-            SetMyCommands setPrivetCommand = SetMyCommands.builder().commands(privetChatCommand).build();
-            telegramClient.execute(setPrivetCommand);
-            log.info("设置命令成功");
+            log.info("设置群聊命令成功");
         } catch (TelegramApiException e) {
             log.error("设置命令失败: {}", e.getMessage());
         }

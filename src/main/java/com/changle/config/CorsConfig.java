@@ -18,7 +18,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")             // 所有接口
-                .allowedOrigins("https://6dcba0848e2f.ngrok-free.app") //todo 修改成你的ngrok地址
+                .allowedOrigins("https://noticeably-positive-bird.ngrok-free.app","http://localhost:5173") //todo 修改成你的ngrok地址
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type", "Authorization", "X-Requested-With")           // 允许所有请求头
                 .allowCredentials(true)        // 允许携带Cookie

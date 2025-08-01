@@ -17,8 +17,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * @author : 长乐
@@ -45,15 +43,7 @@ public class LockGameServiceImpl implements LockGameService {
     @Override
     public LockGame queryLockGame(String userId) {
         LockGame lockGame = lockGameMapper.selectByUserId(userId);
-
-        //String text=String.format("没有用户：<b><a href=\"tg://user?id=%s\">%s</a></b> 的带锁信息!", userId, userName);
-        if (lockGame == null){
-         //   sendMsgService.sendGroupLockMessage()
-
-
-            return lockGame;
-        }
-        return null;
+        return lockGame;
     }
 
     @Override

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.TextQuote;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -31,7 +30,7 @@ public class SendMsgServiceImpl implements SendMsgService {
     public void sendStartMessage(TelegramClient telegramClient, String chatId) {
         try {
             //TODO  new WebAppInfo(url需要更改)
-            InlineKeyboardButton inlineKeyboardButton = InlineKeyboardButton.builder().text("这里，点这里!").webApp(new WebAppInfo("https://6dcba0848e2f.ngrok-free.app")).build();
+            InlineKeyboardButton inlineKeyboardButton = InlineKeyboardButton.builder().text("这里，点这里!").webApp(new WebAppInfo("https://noticeably-positive-bird.ngrok-free.app")).build();
             InlineKeyboardRow inlineKeyboardRow = new InlineKeyboardRow();
             inlineKeyboardRow.add(inlineKeyboardButton);
             InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkup.builder().keyboardRow(inlineKeyboardRow).build();

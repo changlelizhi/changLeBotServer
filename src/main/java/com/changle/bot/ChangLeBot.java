@@ -3,8 +3,6 @@ package com.changle.bot;
 import com.changle.service.ChangLeBotService;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
-import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;

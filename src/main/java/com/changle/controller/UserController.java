@@ -6,6 +6,7 @@ import com.changle.dto.request.UserRegisterRequest;
 import com.changle.entity.User;
 import com.changle.service.UserService;
 import com.changle.utils.UserUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
  * @Date : 2025/7/23
  * @Description : 用户控制类
  */
+@Slf4j
 @Controller
 @RequestMapping("/api/user")
 public class UserController {
@@ -34,6 +36,7 @@ public class UserController {
      */
     @PostMapping("/register")
     public ApiResult<?> register(@RequestBody UserRegisterRequest request) {
+        log.info("用户注册开始: {}", request);
         String firstName = request.getFirstName();
         String lastName = request.getLastName();
         String userName = UserUtils.combineUsername(firstName, lastName);
